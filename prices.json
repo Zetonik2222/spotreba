@@ -1,0 +1,37 @@
+{
+ "ceny": [
+  {
+   "datum": "2026-11-06",
+   "natural95": 1.69,
+   "premium": 1.883,
+   "nafta": 1.983,
+   "premiumDiesel": 2.2,
+   "lpg": 1.016
+  },
+  {
+   "datum": "2026-11-07",
+   "natural95": 1.67,
+   "premium": 1.863,
+   "nafta": 1.968,
+   "premiumDiesel": 2.185,
+   "lpg": 1.016
+  },
+  {
+   "datum": "2026-11-08",
+   "natural95": 1.67,
+   "premium": 1.863,
+   "nafta": 1.968,
+   "premiumDiesel": 2.185,
+   "lpg": 1.016
+  },
+  {
+   "datum": "2026-11-09",
+   "natural95": 1.67,
+   "premium": 1.863,
+   "nafta": 1.968,
+   "premiumDiesel": 2.185,
+   "lpg": 1.016
+  }
+ ],
+ "skontrolovane": "2026-11-09T11:14:22+00:00"
+}

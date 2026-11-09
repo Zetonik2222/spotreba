@@ -1,0 +1,16 @@
+{
+  "name": "Spotreba",
+  "short_name": "Spotreba",
+  "description": "Kalkulačka jazdy, ceny palív zo Slovnaftu, tankovania, umývanie a mesačné výpisy pre tvoje autá.",
+  "lang": "sk",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#1a0508",
+  "theme_color": "#1a0508",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
