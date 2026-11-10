@@ -31,8 +31,15 @@
    "nafta": 1.968,
    "premiumDiesel": 2.185,
    "lpg": 1.016
+  },
+  {
+   "datum": "2026-11-10",
+   "natural95": 1.655,
+   "premium": 1.848,
+   "nafta": 1.95,
+   "premiumDiesel": 2.167,
+   "lpg": 1.016
   }
  ],
- "skontrolovane": "2026-11-09T19:11:17+00:00",
- "chyba": "v cenníku nie je riadok platný pre dnešok"
+ "skontrolovane": "2026-11-10T04:56:00+00:00"
 }
