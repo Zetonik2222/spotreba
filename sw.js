@@ -1,5 +1,5 @@
 /* Spotreba – offline režim. Pri zmene súborov zvýš číslo verzie. */
-var CACHE = "spotreba-v1";
+var CACHE = "spotreba-v2";
 var CORE = ["./", "index.html", "storage.js", "app-extra.js", "garage.js", "manifest.webmanifest", "icon-192.png", "icon-512.png", "apple-touch-icon.png"];
 
 self.addEventListener("install", function (e) {

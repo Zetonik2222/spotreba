@@ -128,7 +128,7 @@
       });
     });
     var months = Object.keys(set).sort().reverse(), box = $("fleetList"); box.innerHTML = "";
-    if (!months.length) { box.innerHTML = '<p class="note">Prehľad sa ukáže po prvom tankovaní alebo umývaní.</p>'; return; }
+    if (!months.length) { box.innerHTML = '<p class="note">Prehľad sa ukáže po prvom tankovaní alebo výdavku.</p>'; return; }
     months.forEach(function (ym) {
       var card = document.createElement("div"); card.className = "rep";
       var h = document.createElement("div"); h.className = "rep-h";
@@ -143,7 +143,7 @@
         var nm = document.createElement("span"); nm.textContent = c.car.nazov;
         var v = document.createElement("b"); v.textContent = fmt(f.s + w.s, 2) + " €";
         var d = document.createElement("small");
-        d.textContent = "palivo " + fmt(f.s, 2) + " € (" + f.n + "×) · umývanie " + fmt(w.s, 2) + " € (" + w.n + "×)" + (r.n ? " · odvozy +" + fmt(r.s, 2) + " €" : "");
+        d.textContent = "palivo " + fmt(f.s, 2) + " € (" + f.n + "×) · výdavky " + fmt(w.s, 2) + " € (" + w.n + "×)" + (r.n ? " · odvozy +" + fmt(r.s, 2) + " €" : "");
         row.appendChild(nm); row.appendChild(v); row.appendChild(d); card.appendChild(row);
       });
       tot.textContent = fmt(total, 2) + " €";

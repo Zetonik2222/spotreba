@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Spotreba</title>
-<meta name="description" content="Kalkulačka jazdy, ceny palív zo Slovnaftu, tankovania, umývanie a mesačné výpisy pre tvoje autá.">
+<meta name="description" content="Kalkulačka jazdy, ceny palív zo Slovnaftu, tankovania, výdavky a mesačné výpisy pre tvoje autá.">
 <meta name="theme-color" content="#1a0508">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png" type="image/png">
@@ -376,13 +376,22 @@ footer{font-size:.78rem;color:var(--muted);line-height:1.45;padding:0 4px}
   <div class="tabs" role="tablist">
     <button id="tab-trip" role="tab" aria-selected="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9h9l2.5-2.5H20V10l-3.5 1v3H11l-2 6H5.5l2-6H5z"/><path d="M14 9V6.5"/></svg>Jazda</button>
     <button id="tab-log" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 6.5a6.5 6.5 0 1 0 0 11"/><path d="M4.5 10.5h9M4.5 13.5h9"/></svg>Tankovania</button>
-    <button id="tab-wash" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3s4 4.4 4 7.2a4 4 0 0 1-8 0C5 7.4 9 3 9 3z"/><path d="M17 11s3 3.3 3 5.4a3 3 0 0 1-6 0c0-2.1 3-5.4 3-5.4z"/></svg>Umývanie</button>
+    <button id="tab-wash" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>Výdavky</button>
     <button id="tab-rep" role="tab" aria-selected="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"/><path d="M15 3v4h4"/><path d="M9 17v-3M12 17v-6M15 17v-4"/></svg>Výpisy</button>
   </div>
 
   <!-- MODE 4: car wash log -->
   <section id="mode-wash" class="card pat" hidden>
     <form class="washform" id="wForm" novalidate>
+      <div class="field">
+        <label>Druh výdavku</label>
+        <div class="chips" id="wKind" role="radiogroup" aria-label="Druh výdavku">
+          <button type="button" class="chip" data-k="Umývanie" aria-pressed="true">Umývanie</button>
+          <button type="button" class="chip" data-k="Príslušenstvo" aria-pressed="false">Príslušenstvo</button>
+          <button type="button" class="chip" data-k="" aria-pressed="false">Iné – napíšem</button>
+        </div>
+        <div class="inp" id="wOtherBox" hidden style="margin-top:8px"><input id="wOther" type="text" maxlength="40" placeholder="napr. diaľničná známka, olej, servis" autocomplete="off"></div>
+      </div>
       <div class="row">
         <div class="field">
           <label for="wSum">Suma</label>
@@ -393,10 +402,10 @@ footer{font-size:.78rem;color:var(--muted);line-height:1.45;padding:0 4px}
           <div class="inp"><input id="wDate" type="date"></div>
         </div>
       </div>
-      <button class="chip save big-btn" type="submit" style="align-self:flex-start">Zapísať umývanie</button>
+      <button class="chip save big-btn" type="submit" style="align-self:flex-start">Zapísať výdavok</button>
       <p class="err" id="wErr" hidden></p>
     </form>
-    <div class="log" id="wList"><p class="note">Zatiaľ žiadne umývanie.</p></div>
+    <div class="log" id="wList"><p class="note">Zatiaľ žiadny výdavok.</p></div>
     <div class="total" id="wTotal" hidden>
       <span>Spolu</span><span class="tv" id="wTotalV">0,00 €</span>
     </div>
@@ -517,13 +526,13 @@ footer{font-size:.78rem;color:var(--muted);line-height:1.45;padding:0 4px}
 
   <!-- MODE 5: monthly reports -->
   <section id="mode-rep" class="card pat" hidden>
-    <p class="note">Každý mesiac sa tu sám vytvorí výpis z tankovaní a umývania. Aktuálny mesiac sa priebežne dopĺňa.</p>
+    <p class="note">Každý mesiac sa tu sám vytvorí výpis z tankovaní a ostatných výdavkov. Aktuálny mesiac sa priebežne dopĺňa.</p>
     <div class="tabs fleet-tabs" id="fleetTabs" hidden role="tablist">
       <button type="button" id="fltCar" role="tab" aria-selected="true">Toto auto</button>
       <button type="button" id="fltAll" role="tab" aria-selected="false">Všetky autá</button>
     </div>
     <div class="reps" id="fleetList" hidden></div>
-    <div class="reps" id="repList"><p class="note">Výpisy sa ukážu po prvom tankovaní alebo umývaní.</p></div>
+    <div class="reps" id="repList"><p class="note">Výpisy sa ukážu po prvom tankovaní alebo výdavku.</p></div>
   </section>
 
   <section class="readout" id="readout" aria-live="polite">
@@ -581,7 +590,7 @@ footer{font-size:.78rem;color:var(--muted);line-height:1.45;padding:0 4px}
 
   <section class="card backup" id="backup">
     <span class="lbl">Záloha údajov</span>
-    <p class="note">Tankovania, umývanie a odvozy sú uložené len v tomto mobile. Raz za čas si urob zálohu, hlavne pred výmenou mobilu alebo vymazaním dát prehliadača. Záloha všetkých áut obnoví celú garáž, záloha jedného auta ho pridá alebo prepíše.</p>
+    <p class="note">Tankovania, výdavky a odvozy sú uložené len v tomto mobile. Raz za čas si urob zálohu, hlavne pred výmenou mobilu alebo vymazaním dát prehliadača. Záloha všetkých áut obnoví celú garáž, záloha jedného auta ho pridá alebo prepíše.</p>
     <div class="actions">
       <button class="chip save big-btn" id="bkSave" type="button">Zálohovať toto auto</button>
       <button class="chip save big-btn" id="bkSaveAll" type="button">Zálohovať všetky autá</button>
@@ -965,6 +974,13 @@ footer{font-size:.78rem;color:var(--muted);line-height:1.45;padding:0 4px}
 
   // --- Car wash log ---
   function wErr(m){$("wErr").textContent=m;$("wErr").hidden=!m}
+  // druh výdavku: Umývanie, Príslušenstvo alebo vlastný text (staré záznamy bez druhu = Umývanie)
+  var wKind="Umývanie";
+  function kindOf(x){return x.druh||"Umývanie"}
+  function wKindSet(k){wKind=k;
+    $("wKind").querySelectorAll(".chip").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.k===k)});
+    $("wOtherBox").hidden=k!=="";if(k==="")$("wOther").focus()}
+  $("wKind").querySelectorAll(".chip").forEach(function(b){b.addEventListener("click",function(){wKindSet(b.dataset.k)})});
   // the date follows the calendar on its own; only a date picked by hand stays
   var wDateManual=false;
   function wDateRefresh(){if(!wDateManual)$("wDate").value=todayStr()}
@@ -977,11 +993,13 @@ footer{font-size:.78rem;color:var(--muted);line-height:1.45;padding:0 4px}
     e.preventDefault();
     wDateRefresh();
     var s=num($("wSum").value),d=$("wDate").value||todayStr();
-    if(!(s>0&&s<1000)){wErr("Zadaj sumu za umývanie, napríklad 8,50.");$("wSum").focus();return}
+    var kind=wKind||$("wOther").value.trim().replace(/\s+/g," ");
+    if(!kind){wErr("Napíš, za čo je výdavok, napríklad olej.");$("wOther").focus();return}
+    if(!(s>0&&s<10000)){wErr("Zadaj sumu výdavku, napríklad 8,50.");$("wSum").focus();return}
     if(!dbRef){wErr("Ukladanie funguje len v online verzii appky.");return}
-    try{await dbRef.collection("umyvanie").add({datum:d,suma:Math.round(s*100)/100,vytvorene:Date.now()});
-      $("wSum").value="";wDateManual=false;wDateRefresh();wErr("");}
-    catch(err){wErr("Umývanie sa nepodarilo zapísať. Skús to znova o chvíľu.")}
+    try{await dbRef.collection("umyvanie").add({datum:d,suma:Math.round(s*100)/100,druh:kind.slice(0,40),vytvorene:Date.now()});
+      $("wSum").value="";$("wOther").value="";wDateManual=false;wDateRefresh();wErr("");}
+    catch(err){wErr("Výdavok sa nepodarilo zapísať. Skús to znova o chvíľu.")}
   });
   // --- Odvozy (taxi) zapísané do výpisu ---
   var rideRows=[],rideSaved=false;
@@ -1003,13 +1021,13 @@ footer{font-size:.78rem;color:var(--muted);line-height:1.45;padding:0 4px}
   function renderWash(rows){
     washRows=rows;renderReports();
     var list=$("wList");list.innerHTML="";
-    if(!rows.length){list.innerHTML='<p class="note">Zatiaľ žiadne umývanie.</p>';$("wTotal").hidden=true;return}
+    if(!rows.length){list.innerHTML='<p class="note">Zatiaľ žiadny výdavok.</p>';$("wTotal").hidden=true;return}
     var tot=0;
     rows.forEach(function(x){tot+=x.suma;
       var row=document.createElement("div");row.className="entry";
       var d=document.createElement("span");d.className="d";d.textContent=fmtDate(x.datum);
       var cv=document.createElement("span");cv.className="c";cv.textContent=fmt(x.suma,2)+" €";
-      var sp=document.createElement("span");
+      var sp=document.createElement("span");sp.className="m";sp.textContent=kindOf(x);
       var del=document.createElement("button");del.type="button";del.className="del";del.textContent="Zmazať";
       del.addEventListener("click",async function(){
         if(!del.classList.contains("arm")){del.classList.add("arm");del.textContent="Naozaj zmazať?";setTimeout(function(){del.classList.remove("arm");del.textContent="Zmazať"},4000);return}
@@ -1024,7 +1042,7 @@ footer{font-size:.78rem;color:var(--muted);line-height:1.45;padding:0 4px}
       var rows=snap.docs.map(function(d){var o=d.data()||{};o.id=d.id;return o}).filter(function(o){return typeof o.suma==="number"&&o.datum});
       rows.sort(function(a,b){return a.datum<b.datum?1:a.datum>b.datum?-1:(b.vytvorene||0)-(a.vytvorene||0)});
       renderWash(rows);
-    },function(){$("wList").innerHTML='<p class="note">Umývania sa nepodarilo načítať. Zatvor a znova otvor appku.</p>'});
+    },function(){$("wList").innerHTML='<p class="note">Výdavky sa nepodarilo načítať. Zatvor a znova otvor appku.</p>'});
   }
 
   // --- Mesačné výpisy ---
@@ -1056,7 +1074,7 @@ footer{font-size:.78rem;color:var(--muted);line-height:1.45;padding:0 4px}
   function renderReports(){
     var list=$("repList");if(!list)return;
     var months=allMonths(),cur=todayStr().slice(0,7);
-    if(!months.length){list.innerHTML='<p class="note">Výpisy sa ukážu po prvom tankovaní alebo umývaní.</p>';return}
+    if(!months.length){list.innerHTML='<p class="note">Výpisy sa ukážu po prvom tankovaní alebo výdavku.</p>';return}
     list.innerHTML="";
     months.forEach(function(ym){
       var st=monthStats(ym),card=document.createElement("div");card.className="rep";
@@ -1069,7 +1087,7 @@ footer{font-size:.78rem;color:var(--muted);line-height:1.45;padding:0 4px}
       if(st.total>0){bar.innerHTML="<i class='f' style='width:"+(st.fuel/st.total*100).toFixed(1)+"%'></i><i class='w' style='width:"+(st.wash/st.total*100).toFixed(1)+"%'></i>"}
       card.appendChild(bar);
       var g=document.createElement("div");g.className="rep-g";
-      var cells=[["fu",fmt(st.fuel,2)+" €","Palivo · "+st.nFuel+"×"],["",fmt(st.wash,2)+" €","Umývanie · "+st.nWash+"×"],["",fmt(st.lit,1)+" l","Natankované"],
+      var cells=[["fu",fmt(st.fuel,2)+" €","Palivo · "+st.nFuel+"×"],["",fmt(st.wash,2)+" €","Výdavky · "+st.nWash+"×"],["",fmt(st.lit,1)+" l","Natankované"],
         ["",st.km!=null?fmtKm(st.km)+" km":"–","Najazdené"],["",st.cons!=null?fmt(st.cons,1)+" l":"–","Spotreba /100 km"],["",st.km?fmt(st.total/st.km,3)+" €":"–","Náklady na 1 km"]];
       cells.forEach(function(c){var d=document.createElement("div");if(c[0])d.className=c[0];var b=document.createElement("b");b.textContent=c[1];var sp=document.createElement("span");sp.textContent=c[2];d.appendChild(b);d.appendChild(sp);g.appendChild(d)});
       card.appendChild(g);
@@ -1129,7 +1147,7 @@ footer{font-size:.78rem;color:var(--muted);line-height:1.45;padding:0 4px}
     var bx=90,by=650,bw=W-180,bh=26;rrect(c,bx,by,bw,bh,13);c.fillStyle="rgba(255,255,255,.1)";c.fill();
     if(st.total>0){c.save();rrect(c,bx,by,bw,bh,13);c.clip();var fw=bw*st.fuel/st.total;c.fillStyle=RED;c.fillRect(bx,by,fw,bh);c.fillStyle="rgba(255,255,255,.55)";c.fillRect(bx+fw,by,bw-fw,bh);c.restore()}
     c.font="600 34px "+B;c.fillStyle=RED;c.fillRect(90,712,22,22);c.fillStyle=INK;c.fillText("Palivo "+fmt(st.fuel,2)+" €  ("+st.nFuel+"×)",126,734);
-    c.fillStyle="rgba(255,255,255,.55)";c.fillRect(90,762,22,22);c.fillStyle=INK;c.fillText("Umývanie "+fmt(st.wash,2)+" €  ("+st.nWash+"×)",126,784);
+    c.fillStyle="rgba(255,255,255,.55)";c.fillRect(90,762,22,22);c.fillStyle=INK;c.fillText("Výdavky "+fmt(st.wash,2)+" €  ("+st.nWash+"×)",126,784);
     var off=0;
     if(st.nRides){off=50;c.fillStyle=INK;c.font="600 34px "+B;c.fillText("🚕 Odvozy "+st.nRides+"×  ·  +"+fmt(st.rides,2)+" € od pasažierov",90,834)}
     // stats row

@@ -5,11 +5,15 @@ import html
 import json
 import re
 import sys
+import time
 import urllib.request
 from datetime import date, datetime, timezone
 from zoneinfo import ZoneInfo
 
-URL = "https://molgroupcards.com/news/informacie-o-kartovej-cennikovej-cene"
+URLS = [
+    "https://molgroupcards.sk/informacie-o-kartovej-cennikovej-cene",  # nový web (od 12. 11. 2026)
+    "https://molgroupcards.com/news/informacie-o-kartovej-cennikovej-cene",  # stará adresa
+]
 FILE = "prices.json"
 PRODUCTS = {  # názov v cenníku -> pole v prices.json
     "natural95": r"Benz[ií]n\s+EVO(?!\s*Plus)",
@@ -18,6 +22,29 @@ PRODUCTS = {  # názov v cenníku -> pole v prices.json
     "premiumDiesel": r"Diesel\s+EVO\s*Plus",
     "lpg": r"\bLPG\b",
 }
+
+
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Mobile Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "sk-SK,sk;q=0.9,en;q=0.7",
+}
+
+
+def fetch() -> str:
+    """Skúsi novú aj starú adresu cenníka, celé najviac 3x."""
+    errors = []
+    for attempt in range(3):
+        for url in URLS:
+            try:
+                req = urllib.request.Request(url, headers=HEADERS)
+                with urllib.request.urlopen(req, timeout=30) as resp:
+                    return resp.read().decode("utf-8", "ignore")
+            except Exception as e:
+                errors.append(f"{url.split('/')[2]}: {e}")
+        if attempt < 2:
+            time.sleep(20 * (attempt + 1))
+    raise RuntimeError("; ".join(errors[-2:]))
 
 
 def page_text(raw: str) -> str:
@@ -69,10 +96,7 @@ def main() -> int:
         data = {"ceny": []}
     data["skontrolovane"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
     try:
-        req = urllib.request.Request(URL, headers={"User-Agent": "Mozilla/5.0 (Passeraty; denná kontrola ceny)"})
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            raw = resp.read().decode("utf-8", "ignore")
-        prices = parse(page_text(raw), today)
+        prices = parse(page_text(fetch()), today)
     except Exception as e:  # cenník nedostupný alebo zmenený – necháme posledné ceny
         print(f"VAROVANIE: ceny sa nepodarilo zistiť: {e}", file=sys.stderr)
         data["chyba"] = str(e)
