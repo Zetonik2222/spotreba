@@ -47,8 +47,15 @@
    "nafta": 1.93,
    "premiumDiesel": 2.147,
    "lpg": 1.016
+  },
+  {
+   "datum": "2026-11-13",
+   "natural95": 1.625,
+   "premium": 1.818,
+   "nafta": 1.91,
+   "premiumDiesel": 2.127,
+   "lpg": 1.016
   }
  ],
- "skontrolovane": "2026-11-13T05:00:26+00:00",
- "chyba": "HTTP Error 401: Unauthorized"
+ "skontrolovane": "2026-11-13T09:22:34+00:00"
 }
