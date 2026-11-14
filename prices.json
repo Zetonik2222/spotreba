@@ -55,7 +55,15 @@
    "nafta": 1.91,
    "premiumDiesel": 2.127,
    "lpg": 1.016
+  },
+  {
+   "datum": "2026-11-14",
+   "natural95": 1.625,
+   "premium": 1.818,
+   "nafta": 1.91,
+   "premiumDiesel": 2.127,
+   "lpg": 1.016
   }
  ],
- "skontrolovane": "2026-11-13T09:22:34+00:00"
+ "skontrolovane": "2026-11-14T04:55:54+00:00"
 }
